@@ -10,6 +10,7 @@ let package = Package(
     products: [
         .library(name: "AdventOfCode2", targets: ["AdventOfCode2"]),
         .library(name: "AdventOfCode2024", targets: ["AdventOfCode2024"]),
+        .library(name: "AdventOfCode2025", targets: ["AdventOfCode2025"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.6.2"),
@@ -22,5 +23,11 @@ let package = Package(
             resources: [.process("Input")]
         ),
         .testTarget(name: "AdventOfCode2024Tests", dependencies: ["AdventOfCode2024"]),
+        .target(
+            name: "AdventOfCode2025",
+            dependencies: ["AdventOfCode2"],
+            resources: [.process("Input")]
+        ),
+//        .testTarget(name: "AdventOfCode2025Tests", dependencies: ["AdventOfCode2025"]),
     ]
 )

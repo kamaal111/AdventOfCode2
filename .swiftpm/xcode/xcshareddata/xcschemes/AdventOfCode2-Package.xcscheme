@@ -35,6 +35,20 @@
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "AdventOfCode2025"
+               BuildableName = "AdventOfCode2025"
+               BlueprintName = "AdventOfCode2025"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -56,6 +70,16 @@
                BlueprintIdentifier = "AdventOfCode2024Tests"
                BuildableName = "AdventOfCode2024Tests"
                BlueprintName = "AdventOfCode2024Tests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "AdventOfCode2025Tests"
+               BuildableName = "AdventOfCode2025Tests"
+               BlueprintName = "AdventOfCode2025Tests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>

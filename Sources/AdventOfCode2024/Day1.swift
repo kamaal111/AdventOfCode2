@@ -40,8 +40,8 @@ struct Day1: AdventOfCodeSolver {
         let input = if let input { input } else { try getInput() }
         var lefts: [Int] = []
         var rights: [Int] = []
-        for line in input.split(separator: "\n") {
-            let numbers = line.split(separator: "   ").map { Int($0)! }
+        for line in input.split(whereSeparator: \.isNewline) {
+            let numbers = line.split(whereSeparator: \.isWhitespace).map { Int($0)! }
             assert(numbers.count == 2)
 
             lefts.append(numbers[0])
