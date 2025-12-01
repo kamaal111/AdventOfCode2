@@ -67,7 +67,7 @@ function replaceTags(content: string, replacements: object) {
   return result;
 }
 
-const replacements = { day: values.day, creation_date: getCreationDate() };
+const replacements = { day: values.day, creation_date: getCreationDate(), year: values.year };
 const filesToCreate: { filepath: string; content: string }[] = [];
 if (!dayDestinationExists) {
   const newDayContent = replaceTags(dayTemplateContent, replacements);

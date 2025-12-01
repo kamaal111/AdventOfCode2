@@ -13,7 +13,7 @@ let package = Package(
         .library(name: "AdventOfCode2025", targets: ["AdventOfCode2025"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.6.2")
+        .package(url: "https://github.com/Kamaalio/KamaalSwift.git", .upToNextMajor(from: "3.4.0")),
     ],
     targets: [
         .target(name: "AdventOfCode2"),
@@ -26,9 +26,12 @@ let package = Package(
         .testTarget(name: "AdventOfCode2024Tests", dependencies: ["AdventOfCode2024"]),
         .target(
             name: "AdventOfCode2025",
-            dependencies: ["AdventOfCode2"],
+            dependencies: [
+                .product(name: "KamaalExtensions", package: "KamaalSwift"),
+                "AdventOfCode2",
+            ],
             resources: [.process("Input")]
         ),
-        //        .testTarget(name: "AdventOfCode2025Tests", dependencies: ["AdventOfCode2025"]),
+        .testTarget(name: "AdventOfCode2025Tests", dependencies: ["AdventOfCode2025"]),
     ]
 )

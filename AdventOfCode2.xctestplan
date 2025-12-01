@@ -15,8 +15,22 @@
     {
       "target" : {
         "containerPath" : "container:",
+        "identifier" : "AdventOfCode2Tests",
+        "name" : "AdventOfCode2Tests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
         "identifier" : "AdventOfCode2024Tests",
         "name" : "AdventOfCode2024Tests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "AdventOfCode2025Tests",
+        "name" : "AdventOfCode2025Tests"
       }
     }
   ],

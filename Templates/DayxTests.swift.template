@@ -6,7 +6,7 @@
 //
 
 import Testing
-@testable import AdventOfCode2024
+@testable import AdventOfCode{{ year }}
 
 private let day{{ day }} = Day{{ day }}()
 
