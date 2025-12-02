@@ -13,4 +13,18 @@ package struct Pair<T> {
         self.left = left
         self.right = right
     }
+
+    package var array: [T] {
+        [left, right]
+    }
+}
+
+extension Pair where T: Comparable {
+    package var range: Range<T> {
+        left..<right
+    }
+
+    package var closedRange: ClosedRange<T> {
+        left...right
+    }
 }

@@ -13,7 +13,7 @@ let package = Package(
         .library(name: "AdventOfCode2025", targets: ["AdventOfCode2025"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/Kamaalio/KamaalSwift.git", .upToNextMajor(from: "3.4.0")),
+        .package(url: "https://github.com/Kamaalio/KamaalSwift.git", .upToNextMajor(from: "3.5.0")),
     ],
     targets: [
         .target(name: "AdventOfCode2"),
