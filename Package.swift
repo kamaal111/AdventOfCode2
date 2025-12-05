@@ -16,7 +16,12 @@ let package = Package(
         .package(url: "https://github.com/Kamaalio/KamaalSwift.git", .upToNextMajor(from: "3.5.0")),
     ],
     targets: [
-        .target(name: "AdventOfCode2"),
+        .target(
+            name: "AdventOfCode2",
+            dependencies: [
+                .product(name: "KamaalExtensions", package: "KamaalSwift"),
+            ]
+        ),
         .testTarget(name: "AdventOfCode2Tests", dependencies: ["AdventOfCode2"]),
         .target(
             name: "AdventOfCode2024",
@@ -32,6 +37,11 @@ let package = Package(
             ],
             resources: [.process("Input")]
         ),
-        .testTarget(name: "AdventOfCode2025Tests", dependencies: ["AdventOfCode2025"]),
+        .testTarget(
+            name: "AdventOfCode2025Tests",
+            dependencies: [
+                "AdventOfCode2",
+                "AdventOfCode2025",
+            ]),
     ]
 )

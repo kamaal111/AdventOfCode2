@@ -5,6 +5,8 @@
 //  Created by Kamaal M Farah on 11/29/25.
 //
 
+import KamaalExtensions
+
 package struct Matrix<T: Hashable>: Sequence, CustomStringConvertible {
     private let elements: [[Element]]
 
@@ -17,12 +19,30 @@ package struct Matrix<T: Hashable>: Sequence, CustomStringConvertible {
         self.elements = elements
     }
 
+    package init(chunks: [[T]]) {
+        let elements = chunks.enumerated()
+            .map { x, items in
+                items.enumerated()
+                    .map { y, value in Element(value: value, row: x, column: y) }
+            }
+        self.init(elements: elements)
+    }
+
+    package init(array: [T], width: Int) {
+        let elements = array.chunked(width, includeRemainder: true)
+        self.init(chunks: elements)
+    }
+
     package var height: Int {
         elements.count
     }
 
     package var width: Int {
         elements.first?.count ?? 0
+    }
+
+    package var counter: Counter<T> {
+        Counter(map(\.value))
     }
 
     package subscript(row: Int, column: Int) -> Element? {
@@ -36,6 +56,11 @@ package struct Matrix<T: Hashable>: Sequence, CustomStringConvertible {
         guard column < width else { return nil }
 
         return elements[row][column]
+    }
+
+    package func draw(_ mapping: (_ element: Element) -> String = { $0.value }) {
+        let drawing = elements.map { row in row.map { mapping($0) }.joined() }.joined(separator: "\n")
+        print(drawing)
     }
 
     package func getVertical(row: Int, column: Int, includingGiven: Bool = false, maxDistance: Int = 1) -> [Element] {
@@ -131,6 +156,18 @@ package struct Matrix<T: Hashable>: Sequence, CustomStringConvertible {
         )
     }
 
+    package func neighbors(row: Int, column: Int) -> [Element] {
+        let deltas = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+
+        return deltas.compactMap { rowDelta, columnDelta in
+            get(row: row + rowDelta, column: column + columnDelta)
+        }
+    }
+
+    package func neighbors(of element: Element) -> [Element] {
+        neighbors(row: element.row, column: element.column)
+    }
+
     package func flatArray() -> [Element] {
         elements.flatMap { $0 }
     }
@@ -151,9 +188,14 @@ package struct Matrix<T: Hashable>: Sequence, CustomStringConvertible {
         }
     }
 
+    package static func fromArray(_ array: [T], width: Int) -> Matrix<T> {
+        Matrix(array: array, width: width)
+    }
+
     package static func fromString(_ string: String) -> Matrix<T> where T == Character {
         let elements = string.split(whereSeparator: \.isNewline)
-            .enumerated().map { x, line in
+            .enumerated()
+            .map { x, line in
                 line.enumerated()
                     .map { y, value in Element(value: value, row: x, column: y) }
             }
