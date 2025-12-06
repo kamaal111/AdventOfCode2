@@ -29,18 +29,18 @@ struct Day5: AdventOfCodeSolver {
     }
 
     func solvePart2(_ input: String?) async throws -> String {
-        let (ranges, ids) = parseInput(input)
+        parseInput(input).ranges
+            .sorted(by: \.left, using: .orderedAscending)
+            .reduce([Pair<Int>]()) { mergedPairs, pair in
+                if let lastMergedPair = mergedPairs.last, pair.left <= lastMergedPair.right {
+                    let newRight = max(lastMergedPair.right, pair.right)
+                    return mergedPairs.removedLast().appended(Pair(left: lastMergedPair.left, right: newRight))
+                }
 
-        return ids.reduce(Set<Pair<Int>>()) { result, id in
-            let freshRanges = ranges.filter { range in
-                id >= range.left && id <= range.right
+                return mergedPairs.appended(pair)
             }
-
-            return result.union(freshRanges)
-        }
-        .reduce(Set<Int>()) { result, ids in result.union(ids.closedRange) }
-        .count
-        .string
+            .reduce(0, { result, pair in result + pair.closedRangeCount })
+            .string
     }
 
     private func parseInput(_ input: String?) -> (ranges: [Pair<Int>], list: [Int]) {

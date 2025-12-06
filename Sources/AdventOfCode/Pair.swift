@@ -28,3 +28,23 @@ extension Pair where T: Comparable {
         left...right
     }
 }
+
+extension Pair where T: Strideable, T: Comparable, T.Stride: SignedInteger {
+    package var closedRangeCount: Int {
+        closedRange.count
+    }
+
+    package var rangeCount: Int {
+        range.count
+    }
+}
+
+extension Pair where T == Int {
+    package var closedRangeCount: Int {
+        closedRange.count
+    }
+
+    package var rangeCount: Int {
+        range.count
+    }
+}

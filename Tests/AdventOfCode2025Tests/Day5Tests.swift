@@ -6,6 +6,7 @@
 //
 
 import Testing
+import KamaalExtensions
 
 @testable import AdventOfCode2025
 
@@ -57,9 +58,10 @@ private let day5 = Day5()
     #expect(solution == "14")
 }
 
-@Test(.disabled("Not solved and too slow"))
-func `Day 5 Part 2`() async throws {
-    let solution = try await day5.solvePart2(nil)
+@Test func `Day 5 Part 2`() async throws {
+    let solution = try await day5.solvePart2(nil).int!
 
-    #expect(solution == "")
+    #expect(solution > 331_874_390_115_074)
+    #expect(solution > 349_978_322_801_186)
+    #expect(solution == 357_907_198_933_892)
 }
