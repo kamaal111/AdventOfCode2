@@ -2,7 +2,7 @@
 //  Day6.swift
 //  AdventOfCode
 //
-//  Created by Kamaal M Farah on 12/06/20.
+//  Created by Kamaal M Farah on 12/06/25.
 //
 
 import AdventOfCode
