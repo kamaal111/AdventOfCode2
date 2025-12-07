@@ -657,3 +657,138 @@ import Testing
 
     #expect(sum == 10)
 }
+
+// MARK: - Set Tests
+
+@Test func `set returns new matrix with updated value`() {
+    let input = """
+        ABC
+        DEF
+        GHI
+        """
+    let matrix = Matrix<Character>.fromString(input)
+
+    let newMatrix = matrix.set(row: 1, column: 1, value: "X")
+
+    #expect(newMatrix.get(row: 1, column: 1)?.value == "X")
+    #expect(matrix.get(row: 1, column: 1)?.value == "E")  // Original unchanged
+}
+
+@Test func `set updates first element`() {
+    let matrix = Matrix<Character>.fromString("ABC")
+
+    let newMatrix = matrix.set(row: 0, column: 0, value: "Z")
+
+    #expect(newMatrix.get(row: 0, column: 0)?.value == "Z")
+    #expect(newMatrix.description == "ZBC")
+}
+
+@Test func `set updates last element`() {
+    let input = """
+        AB
+        CD
+        """
+    let matrix = Matrix<Character>.fromString(input)
+
+    let newMatrix = matrix.set(row: 1, column: 1, value: "Z")
+
+    #expect(newMatrix.get(row: 1, column: 1)?.value == "Z")
+    #expect(newMatrix.description == "AB\nCZ")
+}
+
+@Test func `set updates corner elements correctly`() {
+    let input = """
+        ABC
+        DEF
+        GHI
+        """
+    let matrix = Matrix<Character>.fromString(input)
+
+    let topLeft = matrix.set(row: 0, column: 0, value: "1")
+    let topRight = matrix.set(row: 0, column: 2, value: "2")
+    let bottomLeft = matrix.set(row: 2, column: 0, value: "3")
+    let bottomRight = matrix.set(row: 2, column: 2, value: "4")
+
+    #expect(topLeft.get(row: 0, column: 0)?.value == "1")
+    #expect(topRight.get(row: 0, column: 2)?.value == "2")
+    #expect(bottomLeft.get(row: 2, column: 0)?.value == "3")
+    #expect(bottomRight.get(row: 2, column: 2)?.value == "4")
+}
+
+@Test func `set can be chained`() {
+    let matrix = Matrix<Character>.fromString("ABC")
+
+    let newMatrix =
+        matrix
+        .set(row: 0, column: 0, value: "X")
+        .set(row: 0, column: 1, value: "Y")
+        .set(row: 0, column: 2, value: "Z")
+
+    #expect(newMatrix.description == "XYZ")
+}
+
+@Test func `set preserves element row and column`() {
+    let matrix = Matrix<Character>.fromString("AB")
+
+    let newMatrix = matrix.set(row: 0, column: 1, value: "Z")
+    let element = newMatrix.get(row: 0, column: 1)
+
+    #expect(element?.value == "Z")
+    #expect(element?.row == 0)
+    #expect(element?.column == 1)
+}
+
+@Test func `set with integer matrix`() {
+    let matrix = Matrix(chunks: [[1, 2], [3, 4]])
+
+    let newMatrix = matrix.set(row: 0, column: 1, value: 99)
+
+    #expect(newMatrix.get(row: 0, column: 1)?.value == 99)
+    #expect(newMatrix.description == "199\n34")
+}
+
+@Test func `set with element convenience method`() {
+    let input = """
+        ABC
+        DEF
+        GHI
+        """
+    let matrix = Matrix<Character>.fromString(input)
+    let element = matrix.get(row: 1, column: 1)!
+
+    let newMatrix = matrix.set(element: element, value: "X")
+
+    #expect(newMatrix.get(row: 1, column: 1)?.value == "X")
+    #expect(matrix.get(row: 1, column: 1)?.value == "E")  // Original unchanged
+}
+
+@Test func `set with element preserves row and column`() {
+    let matrix = Matrix<Character>.fromString("AB")
+    let element = matrix.get(row: 0, column: 1)!
+
+    let newMatrix = matrix.set(element: element, value: "Z")
+    let updatedElement = newMatrix.get(row: 0, column: 1)!
+
+    #expect(updatedElement.value == "Z")
+    #expect(updatedElement.row == 0)
+    #expect(updatedElement.column == 1)
+}
+
+@Test func `set with element can be chained`() {
+    let input = """
+        ABC
+        DEF
+        GHI
+        """
+    let matrix = Matrix<Character>.fromString(input)
+
+    let newMatrix =
+        matrix
+        .set(element: matrix.get(row: 0, column: 0)!, value: "1")
+        .set(element: matrix.get(row: 1, column: 1)!, value: "2")
+        .set(element: matrix.get(row: 2, column: 2)!, value: "3")
+
+    #expect(newMatrix.get(row: 0, column: 0)?.value == "1")
+    #expect(newMatrix.get(row: 1, column: 1)?.value == "2")
+    #expect(newMatrix.get(row: 2, column: 2)?.value == "3")
+}

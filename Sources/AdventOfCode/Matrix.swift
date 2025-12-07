@@ -58,9 +58,22 @@ package struct Matrix<T: Hashable>: Sequence, CustomStringConvertible {
         return elements[row][column]
     }
 
-    package func draw(_ mapping: (_ element: Element) -> String = { $0.value }) {
+    package func set(row: Int, column: Int, value: T) -> Self {
+        var newElements = elements
+        newElements[row][column] = Element(value: value, row: row, column: column)
+
+        return Matrix(elements: newElements)
+    }
+
+    package func set(element: Element, value: T) -> Self {
+        set(row: element.row, column: element.column, value: value)
+    }
+
+    @discardableResult
+    package func draw(_ mapping: (_ element: Element) -> String = { $0.value }) -> Self {
         let drawing = elements.map { row in row.map { mapping($0) }.joined() }.joined(separator: "\n")
         print(drawing)
+        return self
     }
 
     package func getVertical(row: Int, column: Int, includingGiven: Bool = false, maxDistance: Int = 1) -> [Element] {
