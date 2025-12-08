@@ -5,8 +5,8 @@
 //  Created by Kamaal M Farah on 12/07/25.
 //
 
-import Foundation
 import AdventOfCode
+import Foundation
 import KamaalExtensions
 
 struct Day7: AdventOfCodeSolver {
@@ -14,17 +14,59 @@ struct Day7: AdventOfCodeSolver {
     let bundle: Bundle = .module
 
     func solvePart1(_ input: String?) async throws -> String {
-        var teleporter = parseInput(input)
+        let teleporter = parseInput(input)
+
+        return countSplits(in: teleporter).string
+    }
+
+    func solvePart2(_ input: String?) async throws -> String {
+        let teleporter = parseInput(input)
+        let timelines = getTimelines(in: teleporter)
+
+        return timelines.values
+            .asArray()
+            .sum(by: \.self)
+            .string
+    }
+
+    private func getTimelines(in teleporter: Matrix<Cell>) -> [Matrix<Cell>.Element: Int] {
+        let start = teleporter.find(by: \.value, is: .start)!
+        var pathCount = [start: 1]
+        traverse(in: teleporter) { next, beam in
+            guard let count = pathCount[beam] else { fatalError("Weird") }
+
+            pathCount[beam] = nil
+
+            switch next.value {
+            case .empty:
+                pathCount[next, default: 0] += count
+            case .splitter:
+                if let left = teleporter.get(row: next.row, column: next.column - 1) {
+                    pathCount[left, default: 0] += count
+                }
+                if let right = teleporter.get(row: next.row, column: next.column + 1) {
+                    pathCount[right, default: 0] += count
+                }
+            case .beam: break
+            case .start: fatalError("Weird")
+            }
+        }
+
+        return pathCount
+    }
+
+    private func traverse(
+        in teleporter: Matrix<Cell>, onNext: (_ next: Matrix<Day7.Cell>.Element, _ beam: Matrix<Cell>.Element) -> Void
+    ) {
         var currentBeams = Set([teleporter.find(by: \.value, is: .start)!])
-        var splitted = 0
         while true {
             var newSetOfBeams = Set<Matrix<Cell>.Element>()
             for beam in currentBeams {
                 guard let next = teleporter.get(row: beam.row + 1, column: beam.column) else { break }
 
+                onNext(next, beam)
                 switch next.value {
                 case .empty:
-                    teleporter = teleporter.set(element: next, value: .beam)
                     newSetOfBeams.insert(next)
                 case .splitter:
                     if let left = teleporter.get(row: next.row, column: next.column - 1) {
@@ -33,7 +75,6 @@ struct Day7: AdventOfCodeSolver {
                     if let right = teleporter.get(row: next.row, column: next.column + 1) {
                         newSetOfBeams.insert(right)
                     }
-                    splitted += 1
                 case .beam: break
                 case .start: fatalError("Weird")
                 }
@@ -43,12 +84,19 @@ struct Day7: AdventOfCodeSolver {
 
             currentBeams = newSetOfBeams
         }
-
-        return splitted.string
     }
 
-    func solvePart2(_ input: String?) async throws -> String {
-        "0"
+    private func countSplits(in teleporter: Matrix<Cell>) -> Int {
+        var splitted = 0
+        traverse(in: teleporter) { next, _ in
+            switch next.value {
+            case .splitter: splitted += 1
+            case .beam, .empty: break
+            case .start: fatalError("Weird")
+            }
+        }
+
+        return splitted
     }
 
     private func parseInput(_ input: String?) -> Matrix<Cell> {

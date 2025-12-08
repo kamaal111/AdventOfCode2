@@ -64,11 +64,11 @@ private let day7 = Day7()
 
     let solution = try await day7.solvePart2(example).int
 
-    #expect(solution == 0)
+    #expect(solution == 40)
 }
 
 @Test func `Day 7 Part 2`() async throws {
     let solution = try await day7.solvePart2(nil).int
 
-    #expect(solution == 0)
+    #expect(solution == 25_592_971_184_998)
 }
